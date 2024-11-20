@@ -1,0 +1,50 @@
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-text {
+  font-size: 2rem; /* Размер шрифта */
+  background: linear-gradient(270deg, 
+    #ff0000, /* Красный */
+    #ff7f00, /* Оранжевый */
+    #ffff00, /* Желтый */
+    #00ff00, /* Зеленый */
+    #00ffff, /* Голубой */
+    #0000ff, /* Синий */
+    #4b0082, /* Фиолетовый */
+    #9400d3  /* Индиго */
+  ); 
+  background-size: 400% 400%;
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+  animation: gradientAnimation 10s ease infinite; 
+}
+button {
+  background-color: #007bff;
+  color: white; 
+  border: none; 
+  padding: 10px 20px; 
+  font-size: 1rem; 
+  cursor: pointer;
+  transition: background-color 0.3s ease; 
+}
+
+button:hover {
+  background-color: #28a745; 
+}
+input {
+  background-color: #ffffff;
+  color: rgb(17, 17, 17); 
+  border: none; 
+  padding: 10px 20px; 
+  font-size: 1rem; 
+  cursor: pointer;
+}
