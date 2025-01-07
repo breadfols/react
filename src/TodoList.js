@@ -1,48 +1,62 @@
-import React, { useState } from 'react';
-import './TodoList.css'; // Импортируйте CSS файл
-
-const rainbowColors = [
-  '#ff0000', // Красный
-  '#ff7f00', // Оранжевый
-  '#ffff00', // Желтый
-  '#00ff00', // Зеленый
-  '#00ffff', // Голубой
-  '#0000ff', // Синий
-  '#4b0082', // Фиолетовый
-];
+import React from 'react';
+import './TodoList.css';
+import useStore from './store';
 
 export const TodoList = () => {
-  const [todos, setTodos] = useState([]);
+  const { filter, addTodo, toggleTodo, deleteTodo, setFilter, filteredTodos } = useStore();
 
-  const addTodo = (todoText) => {
-    const newTodo = {
-      text: todoText,
-      completed: false,
-      color: rainbowColors[todos.length % rainbowColors.length], // Присваиваем цвет
-    };
-    setTodos([...todos, newTodo]);
-  };
-
-  const toggleTodo = (index) => {
-    const updatedTodos = [...todos];
-    updatedTodos[index].completed = !updatedTodos[index].completed;
-    setTodos(updatedTodos);
-  };
+  const filteredTodosList = filteredTodos() || [];
 
   return (
     <div>
       <h2 className="gradient-text">Список дел</h2>
+      <div>
+        <button onClick={() => setFilter('all')} style={{ backgroundColor: filter === 'all' ? 'green' : 'slategray' }}>
+          Все
+        </button>
+        <button onClick={() => setFilter('completed')} style={{ backgroundColor: filter === 'completed' ? 'green' : 'slategray' }}>
+          Завершенные
+        </button>
+        <button onClick={() => setFilter('incomplete')} style={{ backgroundColor: filter === 'incomplete' ? 'green' : 'slategray' }}>
+          Незавершенные
+        </button>
+      </div>
       <ul>
-        {todos.map((todo, index) => (
+        {filteredTodosList.map((todo, index) => (
           <li
-            key={index}
+            key={todo.id}  // Assuming todo has a unique 'id'
             onClick={() => toggleTodo(index)}
             style={{
               textDecoration: todo.completed ? 'line-through' : 'none',
-              color: todo.color, // Применяем цвет к тексту
+              color: todo.color,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              position: 'relative',
+              paddingLeft: '20px',
+              cursor: 'pointer',
             }}
           >
-            {todo.text}
+            <span style={{ position: 'absolute', left: '0' }}>•</span>
+            <span>{todo.text}</span>
+            <span style={{ textDecoration: 'none' }}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); 
+                  deleteTodo(index);
+                }}
+                style={{
+                  marginLeft: '10px',
+                  backgroundColor: 'crimson',
+                  color: 'black',
+                  border: 'none',
+                  padding: '8px 10px',
+                  cursor: 'pointer',
+                }}
+              >
+                Удалить
+              </button>
+            </span>
           </li>
         ))}
       </ul>
